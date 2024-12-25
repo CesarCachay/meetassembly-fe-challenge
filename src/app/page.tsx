@@ -13,7 +13,10 @@ import { useFetchPexels } from '@/hooks/useFetchPexels';
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState('nature');
-  const { data, loading, error } = useFetchPexels(searchValue, 12);
+  const { data, loading, error, hasMorePhotos, fetchNextPage } = useFetchPexels(
+    searchValue,
+    12,
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,7 +49,12 @@ export default function Home() {
           </Button>
         </form>
 
-        <GalleryWrapper photos={data ?? []} loading={loading} />
+        <GalleryWrapper
+          photos={data ?? []}
+          loading={loading}
+          hasMorePhotos={hasMorePhotos}
+          fetchNextPage={fetchNextPage}
+        />
       </main>
     </div>
   );
