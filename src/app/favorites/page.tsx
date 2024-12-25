@@ -9,9 +9,6 @@ import toast from 'react-hot-toast';
 // components
 import { Button } from '@/components/ui/button';
 
-// assets
-import ArrowBackIcon from '@/assets/icons/arrow-back.svg';
-
 // hooks
 import { useFavorites } from '@/hooks/useFavorites';
 
@@ -32,18 +29,6 @@ export default function FavoritesPage() {
 
   return (
     <div className="p-8">
-      <Link
-        href="/"
-        className="flex w-32 rounded-lg px-3 py-4 hover:bg-gray-500 hover:text-white hover:underline"
-      >
-        <Image
-          src={ArrowBackIcon}
-          alt="arrow-back"
-          width={20}
-          className="mr-1"
-        />
-        <div>Go back</div>
-      </Link>
       <h1 className="text-2xl font-bold">Your Favorites</h1>
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {favorites.map((photo) => (
@@ -56,7 +41,7 @@ export default function FavoritesPage() {
               alt={photo.alt ?? `Pexels picture number ${photo.id}`}
               width={400}
               height={300}
-              className="mb-4 mt-2 max-h-[400px] max-w-[400px] rounded-md object-cover"
+              className="mb-4 mt-2 w-[90%] rounded-md object-cover sm:max-h-[400px] sm:max-w-[400px]"
             />
             <div className="text-md text-medium mb-4 text-center">
               {photo.alt ?? 'Picture from Pexels API'}
