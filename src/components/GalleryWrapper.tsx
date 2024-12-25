@@ -25,7 +25,6 @@ const GalleryWrapper: React.FC<GalleryWrapperProps> = ({ photos }) => {
 
   const closeModal = () => setSelectedPhoto(null);
 
-  console.log('selectedPhoto', selectedPhoto);
   return (
     <div className="container mx-auto">
       <ImageGallery photos={photos} onImageClick={handleImageClick} />

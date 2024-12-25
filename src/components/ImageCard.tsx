@@ -12,7 +12,7 @@ interface ImageCardProps {
 const ImageCard: React.FC<ImageCardProps> = ({ photo }) => {
   const { src, alt, id } = photo || {};
   return (
-    <div>
+    <div className="rounded-lg shadow-xl hover:opacity-80">
       <Image
         src={src.medium}
         alt={alt || `Pexels picture ${id}`}
