@@ -2,19 +2,25 @@
 // vendors
 import React, { useState } from 'react';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
 
 // components
 import Modal from './Modal';
+import { Button } from './ui/button';
 import ImageGallery from './ImageGallery';
+
+// utils
+import { handleDownload } from '@/lib/utils';
 
 // types
 import { PexelsPhotoType } from '@/types/pexels';
 
 interface GalleryWrapperProps {
   photos: PexelsPhotoType[];
+  loading: boolean;
 }
 
-const GalleryWrapper: React.FC<GalleryWrapperProps> = ({ photos }) => {
+const GalleryWrapper: React.FC<GalleryWrapperProps> = ({ photos, loading }) => {
   const [selectedPhoto, setSelectedPhoto] = useState<PexelsPhotoType | null>(
     null,
   );
@@ -27,7 +33,11 @@ const GalleryWrapper: React.FC<GalleryWrapperProps> = ({ photos }) => {
 
   return (
     <div className="container mx-auto">
-      <ImageGallery photos={photos} onImageClick={handleImageClick} />
+      <ImageGallery
+        photos={photos}
+        loading={loading}
+        onImageClick={handleImageClick}
+      />
       <Modal isOpen={Boolean(selectedPhoto)} onClose={closeModal}>
         {selectedPhoto && (
           <div className="flex flex-col items-center p-5">
@@ -45,6 +55,18 @@ const GalleryWrapper: React.FC<GalleryWrapperProps> = ({ photos }) => {
               height={selectedPhoto.height / 2}
               className="mb-4 max-h-[650px] max-w-[600px] object-cover"
             />
+
+            <Button
+              onClick={() => {
+                handleDownload(
+                  selectedPhoto.src.original,
+                  `pexels-${selectedPhoto.id}.jpg`,
+                );
+                toast.success('Image download initiated!');
+              }}
+            >
+              Download
+            </Button>
           </div>
         )}
       </Modal>

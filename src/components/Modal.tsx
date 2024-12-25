@@ -14,14 +14,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       role="dialog"
       aria-modal="true"
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-10"
     >
       <div
         className="relative bg-white p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute right-2 top-2 text-gray-600 hover:text-gray-900"
+          className="absolute right-4 top-4 text-gray-600 hover:text-gray-900"
           onClick={onClose}
         >
           ✕

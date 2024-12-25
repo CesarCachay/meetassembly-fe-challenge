@@ -23,11 +23,12 @@ export default function Home() {
     setSearchValue(userInput.toString());
   };
 
-  if (loading) return <div>Loading images ...</div>;
-  if (error) return <div>{error}</div>;
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
+    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
       <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
         <h1>MeetAssembly Challenge Gallery</h1>
         <form
@@ -44,7 +45,8 @@ export default function Home() {
             Search
           </Button>
         </form>
-        {data && !loading && <GalleryWrapper photos={data} />}
+
+        <GalleryWrapper photos={data ?? []} loading={loading} />
       </main>
     </div>
   );
