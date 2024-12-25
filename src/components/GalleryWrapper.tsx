@@ -9,12 +9,14 @@ import ImageDetail from './ImageDetail';
 
 // types
 import { PexelsPhotoType } from '@/types/pexels';
+import { EmptyState } from './EmptyState';
 
 interface GalleryWrapperProps {
   photos: PexelsPhotoType[];
   loading: boolean;
   hasMorePhotos: boolean;
   fetchNextPage: () => void;
+  hasFetchedOnce: boolean;
 }
 
 const GalleryWrapper: React.FC<GalleryWrapperProps> = ({
@@ -22,6 +24,7 @@ const GalleryWrapper: React.FC<GalleryWrapperProps> = ({
   loading,
   hasMorePhotos,
   fetchNextPage,
+  hasFetchedOnce,
 }) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -58,29 +61,43 @@ const GalleryWrapper: React.FC<GalleryWrapperProps> = ({
     };
   }, [loading, hasMorePhotos, fetchNextPage]);
 
+  if (!hasFetchedOnce) {
+    return (
+      <div className="container mx-auto">
+        <ImageGallery
+          photos={[]}
+          loading={true}
+          onImageClick={() => {}}
+          hasFetchedOnce={hasFetchedOnce}
+        />
+      </div>
+    );
+  }
+
+  if (hasFetchedOnce && photos.length === 0 && !loading) {
+    return (
+      <div className="container mx-auto w-full p-4 text-center">
+        <EmptyState />
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto">
-      {photos.length === 0 ? (
-        <div className="container mx-auto">
-          <ImageGallery photos={[]} loading={true} onImageClick={() => {}} />
-        </div>
-      ) : (
-        <>
-          <ImageGallery
-            photos={photos}
-            loading={loading}
-            onImageClick={handleImageClick}
-          />
-          {hasMorePhotos && !loading && (
-            <div ref={observerRef} className="mt-4 h-10 w-full"></div>
-          )}
+      <ImageGallery
+        photos={photos}
+        loading={loading}
+        hasFetchedOnce={hasFetchedOnce}
+        onImageClick={handleImageClick}
+      />
+      {hasMorePhotos && !loading && (
+        <div ref={observerRef} className="mt-4 h-10 w-full"></div>
+      )}
 
-          {!hasMorePhotos && !loading && (
-            <div className="mt-4 text-center">
-              <p>No more photos to load.</p>
-            </div>
-          )}
-        </>
+      {!hasMorePhotos && !loading && (
+        <div className="mt-4 text-center">
+          <p>No more photos to load.</p>
+        </div>
       )}
       <Modal isOpen={Boolean(selectedPhoto)} onClose={closeModal}>
         {selectedPhoto && <ImageDetail photo={selectedPhoto} />}

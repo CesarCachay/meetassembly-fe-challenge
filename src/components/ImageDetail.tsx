@@ -18,27 +18,30 @@ interface ImageDetailsProps {
 
 const ImageDetail: React.FC<ImageDetailsProps> = ({ photo }) => {
   return (
-    <div className="flex flex-col items-center p-5">
-      <div className="mb-2 text-lg text-black">
+    <div className="flex flex-col items-center p-4 sm:p-5">
+      <div className="mb-2 text-center text-lg text-black">
         Picture by:
         <span className="ml-1 font-semibold">
           {photo.photographer || 'Pexels Photographer'}
         </span>
       </div>
 
-      <Image
-        src={photo.src.large}
-        alt={photo.alt || 'Picture from Pexels API'}
-        width={photo.width / 2}
-        height={photo.height / 2}
-        className="mb-4 max-h-[650px] max-w-[600px] object-cover"
-      />
+      <div className="mb-4 w-full max-w-[90vw] sm:max-w-[600px] md:max-w-[800px]">
+        <Image
+          src={photo.src.large}
+          alt={photo.alt || 'Picture from Pexels API'}
+          width={photo.width / 2}
+          height={photo.height / 2}
+          className="rounded-lg object-cover"
+        />
+      </div>
 
       <Button
         onClick={() => {
           handleDownload(photo.src.original, `pexels-${photo.id}.jpg`);
           toast.success('Image download initiated!');
         }}
+        className="w-full max-w-xs"
       >
         Download
       </Button>

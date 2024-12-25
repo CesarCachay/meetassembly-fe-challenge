@@ -12,6 +12,7 @@ interface ImageGalleryProps {
   photos: PexelsPhotoType[];
   onImageClick: (photo: PexelsPhotoType) => void;
   loading: boolean;
+  hasFetchedOnce: boolean;
 }
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({

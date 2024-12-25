@@ -2,6 +2,7 @@
 
 // vendors
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 // components
 import { Input } from '@/components/ui/input';
@@ -13,16 +14,17 @@ import { useFetchPexels } from '@/hooks/useFetchPexels';
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState('nature');
-  const { data, loading, error, hasMorePhotos, fetchNextPage } = useFetchPexels(
-    searchValue,
-    12,
-  );
+  const { data, loading, error, hasMorePhotos, fetchNextPage, hasFetchedOnce } =
+    useFetchPexels(searchValue, 12);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userInput = formData.get('search');
-    if (!userInput) return;
+    if (!userInput) {
+      toast.error('Please try different search or do not leave it empty.');
+      return;
+    }
     setSearchValue(userInput.toString());
   };
 
@@ -31,20 +33,25 @@ export default function Home() {
   }
 
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
+    <div className="w-full items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
+      <main className="flex w-full flex-col items-center gap-8 sm:items-start">
         <h1>MeetAssembly Challenge Gallery</h1>
         <form
           onSubmit={handleSubmit}
-          className="flex w-[80%] flex-col items-start gap-4 sm:flex-row"
+          className="flex w-full flex-col items-start gap-4 sm:flex-row"
         >
           <Input
             type="text"
             name="search"
             defaultValue={searchValue}
             placeholder="Search for categories"
+            className="h-10 border border-gray-300 bg-white text-lg transition-all duration-200 hover:border-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 md:h-14"
           />
-          <Button type="submit" variant="default">
+          <Button
+            type="submit"
+            variant="default"
+            className="h-10 w-full max-w-xs text-lg font-semibold md:h-14"
+          >
             Search
           </Button>
         </form>
@@ -54,6 +61,7 @@ export default function Home() {
           loading={loading}
           hasMorePhotos={hasMorePhotos}
           fetchNextPage={fetchNextPage}
+          hasFetchedOnce={hasFetchedOnce}
         />
       </main>
     </div>
