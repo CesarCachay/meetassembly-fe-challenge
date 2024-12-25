@@ -34,7 +34,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
       {loading &&
         Array.from({ length: 12 }).map((_, i) => (
-          <div key={i} className="relative aspect-square rounded-md">
+          <div
+            key={`skeleton-${i}`}
+            className="relative aspect-square rounded-md"
+          >
             <Skeleton className="h-[300px] w-[300px]" />
           </div>
         ))}

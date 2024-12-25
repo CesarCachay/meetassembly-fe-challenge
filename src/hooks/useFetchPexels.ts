@@ -46,7 +46,12 @@ export const useFetchPexels = (query: string, perPage: number = 12) => {
           if (prevData == null) {
             return newPhotos;
           }
-          return [...prevData, ...newPhotos];
+          const combinedPhotos = [...prevData, ...newPhotos];
+          const uniquePhotos = combinedPhotos.filter(
+            (item, index, arr) =>
+              arr.findIndex((p) => p.id === item.id) === index,
+          );
+          return uniquePhotos;
         });
         setHasMorePhotos(newPhotos.length > 0);
       } catch (err) {
