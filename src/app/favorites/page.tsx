@@ -7,10 +7,14 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 
 // components
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
+import { IconButton } from '@/components/ui/IconButton';
 
 // hooks
 import { useFavorites } from '@/hooks/useFavorites';
+
+// import assets
+import RemoveFavoriteIcon from '@/assets/icons/heart-remove-icon.svg';
 
 export default function FavoritesPage() {
   const { favorites, removeFavorite } = useFavorites();
@@ -46,15 +50,15 @@ export default function FavoritesPage() {
             <div className="text-md text-medium mb-4 text-center">
               {photo.alt ?? 'Picture from Pexels API'}
             </div>
-            <Button
+            <IconButton
+              icon={RemoveFavoriteIcon}
+              label="Remove"
               onClick={() => {
                 removeFavorite(photo.id);
                 toast.success('Removed from favorites!');
               }}
-              className="w-24 rounded bg-red-500 px-2 py-1 text-white"
-            >
-              Remove
-            </Button>
+              className="w-32 rounded bg-gray-500 px-2 py-1 text-white hover:bg-red-500"
+            />
           </div>
         ))}
       </div>

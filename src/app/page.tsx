@@ -45,7 +45,7 @@ export default function Home() {
             name="search"
             defaultValue={searchValue}
             placeholder="Search for categories"
-            className="h-10 border border-gray-300 bg-white text-lg transition-all duration-200 hover:border-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 md:h-14"
+            className="h-10 border border-gray-300 bg-white text-lg transition-all duration-200 placeholder:text-lg hover:border-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 md:h-14"
           />
           <Button
             type="submit"

@@ -4,13 +4,16 @@ import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 // components
-import { Button } from './ui/button';
+import { IconButton } from './ui/IconButton';
 
 // utils
 import { handleDownload } from '@/lib/utils';
 
 // images
 import EmptyAvatar from '@/assets/images/empty-avatar.jpg';
+import DownloadIcon from '@/assets/icons/download-icon.svg';
+import AddFavoriteIcon from '@/assets/icons/white-heart.svg';
+import RemoveFavoriteIcon from '@/assets/icons/heart-remove-icon.svg';
 
 // hooks
 import { useFavorites } from '@/hooks/useFavorites';
@@ -68,23 +71,23 @@ const ImageDetail: React.FC<ImageDetailsProps> = ({ photo }) => {
         />
       </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row">
-        <Button
+      <div className="flex w-[80%] flex-col gap-4 sm:w-full sm:flex-row">
+        <IconButton
+          label="Download"
+          icon={DownloadIcon}
+          className="w-full"
           onClick={() => {
             handleDownload(photo.src.original, `pexels-${photo.id}.jpg`);
             toast.success('Image download initiated!');
           }}
-          className="w-full max-w-xs text-lg font-medium"
-        >
-          Download
-        </Button>
-        <Button
-          variant={isFavorite(photo.id) ? 'destructive' : 'default'}
+        />
+        <IconButton
+          className="w-full"
           onClick={handleToggleFavorite}
-          className="w-full max-w-xs text-lg font-medium"
-        >
-          {isFavorite(photo.id) ? 'Remove from Favorites' : 'Add to Favorites'}
-        </Button>
+          variant={isFavorite(photo.id) ? 'destructive' : 'default'}
+          icon={isFavorite(photo.id) ? RemoveFavoriteIcon : AddFavoriteIcon}
+          label={isFavorite(photo.id) ? 'Remove Favorite' : 'Add to Favorites'}
+        />
       </div>
     </div>
   );
