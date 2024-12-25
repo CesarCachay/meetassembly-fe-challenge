@@ -19,8 +19,10 @@ export type PexelsPhotoType = {
 };
 
 export interface PexelsSearchResponse {
-  photos: PexelsPhotoType[];
-  total_results: number;
-  page: number;
-  per_page: number;
+  data: {
+    photos: PexelsPhotoType[];
+    total_results: number;
+    page: number;
+    per_page: number;
+  };
 }

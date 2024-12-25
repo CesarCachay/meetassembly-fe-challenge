@@ -3,34 +3,18 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 // types
-interface PexelPhoto {
-  id: number;
-  src: {
-    original: string;
-    medium: string;
-    small: string;
-  };
-  photographer: string;
-}
-
-interface PexelResponse {
-  data: {
-    photos: PexelPhoto[];
-    total_results: number;
-    page: number;
-    per_page: number;
-  };
-}
+import { PexelsPhotoType, PexelsSearchResponse } from '@/types/pexels';
 
 const API_KEY = process.env.NEXT_PUBLIC_PEXELS_API_KEY || '';
 const BASE_URL = 'https://api.pexels.com/v1';
 
 export const useFetchPexels = (query: string, perPage: number = 12) => {
-  const [data, setData] = useState<PexelPhoto[] | null>([]);
+  const [data, setData] = useState<PexelsPhotoType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
   const [hasMorePhotos, setHasMorePhotos] = useState<boolean>(true);
+  const [hasFetchedOnce, setHasFetchedOnce] = useState<boolean>(false);
 
   const handleFetchPhotos = useCallback(
     async (pageNumber: number = 1) => {
@@ -44,24 +28,26 @@ export const useFetchPexels = (query: string, perPage: number = 12) => {
       setError(null);
 
       try {
-        const response: PexelResponse = await axios.get(`${BASE_URL}/search`, {
-          headers: {
-            Authorization: API_KEY,
+        const response: PexelsSearchResponse = await axios.get(
+          `${BASE_URL}/search`,
+          {
+            headers: {
+              Authorization: API_KEY,
+            },
+            params: {
+              query: query.trim(),
+              per_page: perPage,
+              page: pageNumber,
+            },
           },
-          params: {
-            query: query.trim(),
-            per_page: perPage,
-            page: pageNumber,
-          },
-        });
-        const newPhotos = response.data.photos;
-        setData((prevData) =>
-          prevData
-            ? pageNumber === 1
-              ? newPhotos
-              : [...prevData, ...newPhotos]
-            : newPhotos,
         );
+        const newPhotos = response.data.photos;
+        setData((prevData) => {
+          if (prevData == null) {
+            return newPhotos;
+          }
+          return [...prevData, ...newPhotos];
+        });
         setHasMorePhotos(newPhotos.length > 0);
       } catch (err) {
         const errorMessage = 'Error fetching images. Please try again.';
@@ -69,6 +55,7 @@ export const useFetchPexels = (query: string, perPage: number = 12) => {
         console.error('Error fetching images:', err);
       } finally {
         setLoading(false);
+        setHasFetchedOnce(true);
       }
     },
     [query, perPage],
@@ -83,12 +70,11 @@ export const useFetchPexels = (query: string, perPage: number = 12) => {
   }, [hasMorePhotos, page, handleFetchPhotos]);
 
   useEffect(() => {
-    if (!query.trim()) {
-      setPage(1);
-      handleFetchPhotos(1);
-    }
-    handleFetchPhotos();
-  }, [handleFetchPhotos, query]);
+    setPage(1);
+    setData([]);
+    setHasFetchedOnce(false);
+    handleFetchPhotos(1);
+  }, [query, handleFetchPhotos]);
 
-  return { data, loading, error, hasMorePhotos, fetchNextPage };
+  return { data, loading, error, hasMorePhotos, fetchNextPage, hasFetchedOnce };
 };

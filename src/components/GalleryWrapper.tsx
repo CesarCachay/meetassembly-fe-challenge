@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 
 // components
 import Modal from './Modal';
-import { Button } from './ui/button';
 import ImageGallery from './ImageGallery';
 import ImageDetail from './ImageDetail';
 
@@ -61,24 +60,27 @@ const GalleryWrapper: React.FC<GalleryWrapperProps> = ({
 
   return (
     <div className="container mx-auto">
-      <ImageGallery
-        photos={photos}
-        loading={loading}
-        onImageClick={handleImageClick}
-      />
-      <div className="container mx-auto">
-        <Button onClick={fetchNextPage} disabled={loading}>
-          Next
-        </Button>
-      </div>
-      {hasMorePhotos && !loading && (
-        <div ref={observerRef} className="mt-4 h-10 w-full"></div>
-      )}
-
-      {!hasMorePhotos && !loading && (
-        <div className="mt-4 text-center">
-          <p>No more photos to load.</p>
+      {photos.length === 0 ? (
+        <div className="container mx-auto">
+          <ImageGallery photos={[]} loading={true} onImageClick={() => {}} />
         </div>
+      ) : (
+        <>
+          <ImageGallery
+            photos={photos}
+            loading={loading}
+            onImageClick={handleImageClick}
+          />
+          {hasMorePhotos && !loading && (
+            <div ref={observerRef} className="mt-4 h-10 w-full"></div>
+          )}
+
+          {!hasMorePhotos && !loading && (
+            <div className="mt-4 text-center">
+              <p>No more photos to load.</p>
+            </div>
+          )}
+        </>
       )}
       <Modal isOpen={Boolean(selectedPhoto)} onClose={closeModal}>
         {selectedPhoto && <ImageDetail photo={selectedPhoto} />}

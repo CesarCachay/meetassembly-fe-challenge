@@ -26,14 +26,14 @@ const ImageCard: React.FC<ImageCardProps> = ({ photo }) => {
         </div>
       ) : (
         <Image
+          priority
           src={src.medium}
           alt={alt || `Pexels picture ${id}`}
           height={300}
           width={300}
-          loading="lazy"
           className={`h-auto w-full object-cover transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'} `}
           onError={() => setHasError(true)}
-          onLoadingComplete={() => setIsLoading(false)}
+          onLoad={() => setIsLoading(false)}
         />
       )}
     </div>

@@ -19,30 +19,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   photos,
   onImageClick,
 }) => {
-  const getSkeletonCount = () => {
-    if (typeof window !== 'undefined') {
-      return Math.ceil(window.innerWidth / 300) * 2;
-    }
-    return 12;
-  };
-  const skeletonCount = getSkeletonCount();
-
-  if (loading || photos.length === 0) {
-    return (
-      <div className="container mx-auto">
-        <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-4">
-          {Array.from({ length: skeletonCount }).map((_, i) => (
-            <div key={i} className="relative aspect-square rounded-md">
-              <Skeleton className="h-[300px] w-[300px]" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 xl:grid-cols-4">
       {photos.map((photo) => (
         <div
           key={photo.id}
@@ -52,6 +30,13 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
           <ImageCard photo={photo} />
         </div>
       ))}
+
+      {loading &&
+        Array.from({ length: 12 }).map((_, i) => (
+          <div key={i} className="relative aspect-square rounded-md">
+            <Skeleton className="h-[300px] w-[300px]" />
+          </div>
+        ))}
     </div>
   );
 };
