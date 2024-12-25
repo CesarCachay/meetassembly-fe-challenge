@@ -2,6 +2,8 @@
 
 // vendors
 import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 // components
@@ -11,6 +13,9 @@ import GalleryWrapper from '@/components/GalleryWrapper';
 
 // hooks
 import { useFetchPexels } from '@/hooks/useFetchPexels';
+
+// assets
+import FavoritesIcon from '@/assets/icons/favourite-icon.svg';
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState('nature');
@@ -35,7 +40,24 @@ export default function Home() {
   return (
     <div className="w-full items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
       <main className="flex w-full flex-col items-center gap-8 sm:items-start">
-        <h1>MeetAssembly Challenge Gallery</h1>
+        <div className="flex w-full items-center justify-between">
+          <h1 className="text-2xl font-semibold">
+            MeetAssembly Challenge Gallery
+          </h1>
+          <Link
+            href="/favorites"
+            className="flex rounded-lg px-3 py-4 hover:bg-gray-500 hover:text-white hover:underline"
+          >
+            <div>Go to favorites</div>
+            <Image
+              src={FavoritesIcon}
+              alt="favorites-images"
+              width={24}
+              height={24}
+              className="ml-1 h-6 w-6"
+            />
+          </Link>
+        </div>
         <form
           onSubmit={handleSubmit}
           className="flex w-full flex-col items-start gap-4 sm:flex-row"
