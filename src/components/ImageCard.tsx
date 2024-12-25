@@ -18,23 +18,25 @@ const ImageCard: React.FC<ImageCardProps> = ({ photo }) => {
   const [hasError, setHasError] = useState(false);
 
   return (
-    <div className="rounded-lg shadow-xl hover:opacity-80">
+    <div className="flex justify-center rounded-lg shadow-xl hover:opacity-80">
       {isLoading && <Skeleton className="h-[300px] w-[300px]" />}
       {hasError ? (
         <div className="flex h-[300px] w-[300px] items-center justify-center bg-gray-200 text-gray-500">
           Failed to load image
         </div>
       ) : (
-        <Image
-          priority
-          src={src.medium}
-          alt={alt || `Pexels picture ${id}`}
-          height={300}
-          width={300}
-          className={`h-auto w-full object-cover transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'} `}
-          onError={() => setHasError(true)}
-          onLoad={() => setIsLoading(false)}
-        />
+        <div>
+          <Image
+            priority
+            src={src.medium}
+            alt={alt || `Pexels picture ${id}`}
+            height={300}
+            width={300}
+            className={`h-[300px] w-auto object-contain transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'} p-4`}
+            onError={() => setHasError(true)}
+            onLoad={() => setIsLoading(false)}
+          />
+        </div>
       )}
     </div>
   );

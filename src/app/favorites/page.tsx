@@ -1,5 +1,4 @@
 'use client';
-
 // vendors
 import React from 'react';
 import Image from 'next/image';
@@ -7,7 +6,6 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 
 // components
-// import { Button } from '@/components/ui/button';
 import { IconButton } from '@/components/ui/IconButton';
 
 // hooks
