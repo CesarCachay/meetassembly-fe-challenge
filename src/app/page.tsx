@@ -7,11 +7,14 @@ import toast from 'react-hot-toast';
 
 // components
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import GalleryWrapper from '@/components/GalleryWrapper';
 
 // hooks
 import { useFetchPexels } from '@/hooks/useFetchPexels';
+import { IconButton } from '@/components/ui/IconButton';
+
+// assets
+import SearchIcon from '@/assets/icons/search-icon.svg';
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState('nature');
@@ -47,13 +50,13 @@ export default function Home() {
             placeholder="Search for categories"
             className="h-10 border border-gray-300 bg-white text-lg transition-all duration-200 placeholder:text-lg hover:border-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 md:h-14"
           />
-          <Button
+          <IconButton
+            icon={SearchIcon}
+            label="Search"
             type="submit"
             variant="default"
-            className="h-10 w-full max-w-xs text-lg font-semibold md:h-14"
-          >
-            Search
-          </Button>
+            className="h-10 w-full max-w-sm text-lg font-semibold md:h-14"
+          />
         </form>
 
         <GalleryWrapper
