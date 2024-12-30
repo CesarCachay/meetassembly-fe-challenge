@@ -5,9 +5,6 @@ import axios from 'axios';
 // types
 import { PexelsPhotoType, PexelsSearchResponse } from '@/types/pexels';
 
-const API_KEY = process.env.NEXT_PUBLIC_PEXELS_API_KEY || '';
-const BASE_URL = 'https://api.pexels.com/v1';
-
 export const useFetchPexels = (query: string, perPage: number = 12) => {
   const [data, setData] = useState<PexelsPhotoType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,22 +15,13 @@ export const useFetchPexels = (query: string, perPage: number = 12) => {
 
   const handleFetchPhotos = useCallback(
     async (pageNumber: number = 1) => {
-      if (!API_KEY) {
-        console.error('Missing API key for Pexels API');
-        setError('Missing API key.');
-        return;
-      }
-
       setLoading(true);
       setError(null);
 
       try {
         const response: PexelsSearchResponse = await axios.get(
-          `${BASE_URL}/search`,
+          `/api/get-images`,
           {
-            headers: {
-              Authorization: API_KEY,
-            },
             params: {
               query: query.trim(),
               per_page: perPage,
